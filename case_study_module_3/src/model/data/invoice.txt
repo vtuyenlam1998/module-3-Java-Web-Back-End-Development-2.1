@@ -1,0 +1,18 @@
+				HÓA ĐƠN
+THÔNG TIN NGƯỜI DÙNG: 
+- ID: 9
+- Tên họ đầy đủ: Phạm Văn Chính
+- Số điện thoại: 0987654322
+- Email: phamchinh@gmail.com
+- Địa chỉ nhà: 21K Nguyen van troi
+
+
+THÔNG TIN GIỎ HÀNG
+Số lượng sản phẩm đã mua: 3
+Sản phẩm đã mua: Đứa Trẻ Hư (Tái Bản)
+Giá tiền sản phẩm: 150500
+Sản phẩm đã mua: Ngôi Làng Cổ Mộ
+Giá tiền sản phẩm: 157000
+Sản phẩm đã mua: Ngôi Làng Cổ Mộ
+Giá tiền sản phẩm: 157000
+Tổng tiền: 464500 ₫
