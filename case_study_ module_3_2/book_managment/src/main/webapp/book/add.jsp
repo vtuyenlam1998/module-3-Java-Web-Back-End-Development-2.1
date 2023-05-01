@@ -18,7 +18,7 @@
 </head>
 <body>
 <p style="float: left">
-    <a href="/books?action=books">Back to book lists</a>
+    <a href="/home">Back to book lists</a>
 </p>
 <center>
     <h1>Add new book</h1>

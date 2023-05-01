@@ -107,7 +107,7 @@ public class BookDAO implements IBookDAO {
         try (Connection connection = JdbcConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_SQL)) {
             preparedStatement.setString(1, book.getName());
             preparedStatement.setString(2, book.getType());
-            preparedStatement.setDate(3, (Date) book.getYear());
+            preparedStatement.setDate(3, new Date(book.getYear().getTime()));
             preparedStatement.setString(4, book.getDetail());
             preparedStatement.setInt(5, book.getPrice());
             preparedStatement.setInt(6, book.getQuantity());

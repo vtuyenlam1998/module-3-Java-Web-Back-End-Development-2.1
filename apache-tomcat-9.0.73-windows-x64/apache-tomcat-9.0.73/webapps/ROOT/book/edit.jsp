@@ -13,7 +13,7 @@
 </head>
 <body>
 <p>
-    <a href="/books?action=books">Back to book list</a>
+    <a href="/home">Back to book list</a>
 </p>
 <center>
     <h1>Book Management</h1>
@@ -41,7 +41,7 @@
                 </tr>
                 <tr>
                     <td>Year: </td>
-                    <td><input type="text" name="year" id="year" value="${requestScope["book"].getYear()}"></td>
+                    <td><input type="date" name="year" id="year" value="${requestScope["book"].getYear()}"></td>
                 </tr>
                 <tr>
                     <td>Detail: </td>

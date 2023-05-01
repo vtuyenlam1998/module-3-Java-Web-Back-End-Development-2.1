@@ -13,7 +13,18 @@ public class User {
     public User() {
     }
 
-    protected User(int id,String userName, String fullName, String phoneNumber, String email, String passWord, String address,String avatar) {
+    public User(String userName, String fullName, String phoneNumber, String email, String passWord, String address, String avatar) {
+        super();
+        this.userName = userName;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.passWord = passWord;
+        this.address = address;
+        this.avatar = avatar;
+    }
+
+    public User(int id, String userName, String fullName, String phoneNumber, String email, String passWord, String address, String avatar) {
         this.ID = id;
         this.userName = userName;
         this.fullName = fullName;
@@ -23,6 +34,17 @@ public class User {
         this.address = address;
         this.avatar = avatar;
     }
+
+    public User(String fullName, String phoneNumber, String email, String passWord, String address, String avatar) {
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.passWord = passWord;
+        this.address = address;
+        this.avatar = avatar;
+    }
+
+
 
     public int getID() {
         return ID;
