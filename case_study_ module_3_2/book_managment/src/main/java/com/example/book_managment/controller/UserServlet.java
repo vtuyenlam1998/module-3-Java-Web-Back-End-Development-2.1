@@ -132,7 +132,7 @@ public class UserServlet extends HttpServlet {
         request.getSession().setAttribute("user",getCurrentUser());
         List<Book> bookList = bookDao.selectAllBook();
         request.setAttribute("bookList", bookList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/book/list.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/view/home/home.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException | IOException e) {
@@ -190,7 +190,7 @@ public class UserServlet extends HttpServlet {
                     currentUser = user;
                     List<Book> bookList = bookDao.selectAllBook();
                     request.setAttribute("bookList", bookList);
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("book/list.jsp");
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/view/home/home.jsp");
                     session.setAttribute("user", getCurrentUser());
                     session.setAttribute("avatar", getCurrentUser().getAvatar());
                     try {

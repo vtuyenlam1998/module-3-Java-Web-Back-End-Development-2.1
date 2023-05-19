@@ -4,6 +4,7 @@ import com.example.book_managment.model.dao.BookDAO;
 import com.example.book_managment.model.entity.Book;
 import com.example.book_managment.model.entity.Staff;
 import com.example.book_managment.model.entity.User;
+import com.example.book_managment.model.service.BookService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,10 +22,8 @@ import java.util.List;
 @WebServlet(name = "BookServlet", urlPatterns = {"/", "", "/home"})
 public class BookServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private BookDAO bookDAO;
 
     public void init() {
-        bookDAO = new BookDAO();
     }
 
     @Override
@@ -56,14 +55,14 @@ public class BookServlet extends HttpServlet {
 
     private void searchBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String keySearch = request.getParameter("search");
-        List<Book> bookList = bookDAO.selectAllBook();
+        List<Book> bookList = BookService.getInstance().getAllBook();
         List<Book> searchList = new ArrayList<>();
         for (Book book : bookList) {
             if (book.getName().toLowerCase().contains(keySearch.toLowerCase())) {
                 searchList.add(book);
             }
         }
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("book/list.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/view/home/home.jsp");
         if (searchList.isEmpty()) {
             request.setAttribute("message", "Không tìm thấy sách theo yêu cầu");
         } else {
@@ -84,8 +83,8 @@ public class BookServlet extends HttpServlet {
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         String img = request.getParameter("img");
         Book book = new Book(id, name, type, year, detail, price, quantity, img);
-        bookDAO.updateBook(book);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("book/edit.jsp");
+        BookService.getInstance().updateBook(book);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/book/edit.jsp");
         request.setAttribute("message", "New book was updated");
         try {
             dispatcher.forward(request, response);
@@ -103,8 +102,8 @@ public class BookServlet extends HttpServlet {
         int quantity =Integer.parseInt(request.getParameter("quantity"));
         String img =request.getParameter("img");
         Book book = new Book(name,type,year,detail,price,quantity,img);
-        bookDAO.insertBook(book);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("book/add.jsp");
+        BookService.getInstance().insertBook(book);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/book/add.jsp");
         request.setAttribute("message","New book was added");
         try {
             dispatcher.forward(request, response);
@@ -141,11 +140,14 @@ public class BookServlet extends HttpServlet {
                 case "/delete":
                     deleteBookServlet(request, response);
                     break;
-                case "/404":
-                    show404Form(request,response);
-                    break;
-                default:
+                case "/":
+                case "":
+                case "/home":
                     listBook(request, response);
+                    break;
+                case "/404":
+                default:
+                    show404Form(request, response);
                     break;
             }
         } catch (Exception ex) {
@@ -154,15 +156,15 @@ public class BookServlet extends HttpServlet {
     }
 
     private void show404Form(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("book/error-404.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/view/error/error-404.jsp");
         dispatcher.forward(request,response);
     }
 
     private void showDetailForm(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
-        Book book = bookDAO.selectBook(id);
+        Book book = BookService.getInstance().getDetailBook(id);
         request.setAttribute("book", book);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("book/detail.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/view/book/detail.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException | IOException e) {
@@ -182,17 +184,17 @@ public class BookServlet extends HttpServlet {
         } else {
             if (user instanceof Staff) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                bookDAO.deleteBook(id);
-                List<Book> bookList = bookDAO.selectAllBook();
+                BookService.getInstance().deleteBook(id);
+                List<Book> bookList = BookService.getInstance().getAllBook();
                 request.getSession().setAttribute("bookList", bookList);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("book/list.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/home/home.jsp");
                 try {
                     dispatcher.forward(request, response);
                 } catch (ServletException | IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("book/list.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/home/home.jsp");
                 try {
                     dispatcher.forward(request, response);
                 } catch (ServletException | IOException e) {
@@ -214,13 +216,13 @@ public class BookServlet extends HttpServlet {
         } else {
             if (user instanceof Staff) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                Book book = bookDAO.selectBook(id);
+                Book book = BookService.getInstance().getDetailBook(id);
                 RequestDispatcher dispatcher;
                 if (book == null) {
-                    dispatcher = request.getRequestDispatcher("error-404.jsp");
+                    dispatcher = request.getRequestDispatcher("/WEB-INF/view/error/error-404.jsp");
                 } else {
                     request.setAttribute("book", book);
-                    dispatcher = request.getRequestDispatcher("book/edit.jsp");
+                    dispatcher = request.getRequestDispatcher("/WEB-INF/view/book/edit.jsp");
                 }
                 try {
                     dispatcher.forward(request, response);
@@ -228,7 +230,7 @@ public class BookServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             } else {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("book/list.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/home/home.jsp");
                 try {
                     dispatcher.forward(request, response);
                 } catch (ServletException | IOException e) {
@@ -249,14 +251,14 @@ public class BookServlet extends HttpServlet {
             }
         } else {
             if (user instanceof Staff) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("book/add.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/book/add.jsp");
                 try {
                     dispatcher.forward(request, response);
                 } catch (ServletException | IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("book/list.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/home/home.jsp");
                 try {
                     dispatcher.forward(request, response);
                 } catch (ServletException | IOException e) {
@@ -267,14 +269,13 @@ public class BookServlet extends HttpServlet {
     }
 
     private void listBook(HttpServletRequest request, HttpServletResponse response) {
-        List<Book> bookList = bookDAO.selectAllBook();
+        List<Book> bookList = BookService.getInstance().getAllBook();
         request.getSession().setAttribute("bookList", bookList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("book/list.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/view/home/home.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
     }
-
 }

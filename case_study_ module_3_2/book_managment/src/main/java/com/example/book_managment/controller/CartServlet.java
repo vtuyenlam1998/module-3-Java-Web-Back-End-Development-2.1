@@ -81,7 +81,7 @@ public class CartServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             } else {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("book/list.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("book/home.jsp");
                 try {
                     dispatcher.forward(request, response);
                 } catch (ServletException | IOException e) {
